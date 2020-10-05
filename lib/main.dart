@@ -29,6 +29,10 @@ class MyHomePage extends StatelessWidget {
         time: DateTime.now(),
         currency: '£')
   ];
+
+  String titleInput;
+  String amountInput;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,6 +50,34 @@ class MyHomePage extends StatelessWidget {
                 color: Colors.blue,
                 elevation: 5,
                 child: Text('Charts'),
+              ),
+            ),
+            Card(
+              child: Container(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    TextField(
+                      decoration: InputDecoration(labelText: 'Title'),
+                      onChanged: (value) {
+                        titleInput = value;
+                      },
+                    ),
+                    TextField(
+                      decoration: InputDecoration(labelText: 'Amount'),
+                      onChanged: (value) => amountInput = value,
+                    ),
+                    FlatButton(
+                      onPressed: () {
+                        print(titleInput);
+                        print(amountInput);
+                      },
+                      child: Text('Add Transaction'),
+                      textColor: Colors.purple,
+                    )
+                  ],
+                ),
               ),
             ),
             Column(
