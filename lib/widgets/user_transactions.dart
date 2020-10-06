@@ -26,11 +26,23 @@ class _UserTransactionsState extends State<UserTransactions> {
         currency: '£')
   ];
 
+  void _addTransaction(String title, double amount) {
+    final transaction = Transaction(
+        amount: amount,
+        title: title,
+        currency: '£',
+        time: DateTime.now(),
+        id: DateTime.now().toString());
+    setState(() {
+      _transactions.add(transaction);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TransactionInput(),
+        TransactionInput(_addTransaction),
         TransactionsList(transactions: _transactions)
       ],
     );
