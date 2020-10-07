@@ -8,43 +8,58 @@ class TransactionsList extends StatelessWidget {
   TransactionsList({@required this.transactions});
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: transactions.map((tx) {
-        return Card(
-          child: Row(
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.purple, width: 1)),
-                padding: EdgeInsets.all(10),
-                child: Text('${tx.currency + tx.amount.toString()}',
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.purple)),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    tx.title,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.bold),
+    return Container(
+      height: 300,
+      child: ListView.builder(
+        itemBuilder: (ctx, index) {
+          return Card(
+            child: Row(
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 15,
                   ),
-                  Text(DateFormat.yMMMMd().format(tx.time),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.purple,
+                      width: 2,
+                    ),
+                  ),
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    '\$${transactions[index].amount}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: Colors.purple,
+                    ),
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      transactions[index].title,
                       style: TextStyle(
-                          color: Colors.black87,
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.normal))
-                ],
-              )
-            ],
-          ),
-        );
-      }).toList(),
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      DateFormat.yMMMd().format(transactions[index].time),
+                      style: TextStyle(
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        },
+        itemCount: transactions.length,
+      ),
     );
   }
 }
