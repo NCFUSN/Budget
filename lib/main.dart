@@ -20,7 +20,7 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Expences Summary'),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -30,7 +30,7 @@ class MyHomePage extends StatelessWidget {
               child: Card(
                 color: Colors.blue,
                 elevation: 5,
-                child: Text('Charts'),
+                child: Text('Chartssss'),
               ),
             ),
             UserTransactions()
