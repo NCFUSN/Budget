@@ -1,11 +1,29 @@
 import 'package:flutter/material.dart';
 import '../models/transaction.dart';
 
-class TransactionInput extends StatelessWidget {
-  final titleController = TextEditingController();
-  final amountController = TextEditingController();
+class TransactionInput extends StatefulWidget {
   final Function addTransaction;
   TransactionInput(this.addTransaction);
+
+  @override
+  _TransactionInputState createState() => _TransactionInputState();
+}
+
+class _TransactionInputState extends State<TransactionInput> {
+  final titleController = TextEditingController();
+
+  final amountController = TextEditingController();
+
+  void submitData() {
+    final enteredTitle = titleController.text;
+    final enteredAmount = double.parse(amountController.text);
+
+    if (enteredTitle.isEmpty || enteredAmount <= 0) {
+      return;
+    }
+    widget.addTransaction(enteredTitle, enteredAmount);
+    Navigator.of(context).pop(); // closes most top screen
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,17 +34,18 @@ class TransactionInput extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             TextField(
-              decoration: InputDecoration(labelText: 'Title'),
-              controller: titleController,
-            ),
+                decoration: InputDecoration(labelText: 'Title'),
+                controller: titleController,
+                onSubmitted: (_) => submitData()),
             TextField(
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
               decoration: InputDecoration(labelText: 'Amount'),
               controller: amountController,
+              onSubmitted: (_) => submitData(),
             ),
             FlatButton(
               onPressed: () {
-                addTransaction(
-                    titleController.text, double.parse(amountController.text));
+                submitData();
               },
               child: Text('Add Transaction'),
               textColor: Colors.purple,
