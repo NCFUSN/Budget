@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
         home: MyHomePage(),
         theme: ThemeData(
             primarySwatch: Colors.blueGrey,
-            accentColor: Colors.amber,
+            accentColor: Colors.blueGrey,
             fontFamily: 'Quicksand',
             appBarTheme: AppBarTheme(
               textTheme: ThemeData.light().textTheme.copyWith(
