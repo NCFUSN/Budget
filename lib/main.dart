@@ -9,7 +9,6 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final curScaleFactor = MediaQuery.of(context).textScaleFactor;
     return MaterialApp(
         title: 'MyExpenses',
         home: MyHomePage(),
@@ -21,13 +20,12 @@ class MyApp extends StatelessWidget {
                 title: TextStyle(
                   fontFamily: 'OpenSans',
                   fontWeight: FontWeight.bold,
-                  fontSize: 18 * curScaleFactor,
+                  fontSize: 18,
                 ),
                 button: TextStyle(color: Colors.white)),
             appBarTheme: AppBarTheme(
               textTheme: ThemeData.light().textTheme.copyWith(
-                  title: TextStyle(
-                      fontFamily: 'OpenSans', fontSize: 20.0 * curScaleFactor)),
+                  title: TextStyle(fontFamily: 'OpenSans', fontSize: 20.0)),
             )));
   }
 }
@@ -112,13 +110,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: (MediaQuery.of(context).size.height -
                           appBar.preferredSize.height -
                           MediaQuery.of(context).padding.top) *
-                      0.4,
+                      0.3,
                   child: Chart(_recentTransactions)),
               Container(
                 height: (MediaQuery.of(context).size.height -
                         appBar.preferredSize.height -
                         MediaQuery.of(context).padding.top) *
-                    0.6, // dedact navbar + status bar height
+                    0.7, // dedact navbar + status bar height
                 child: TransactionsList(
                   transactions: _transactions,
                   deleteTransaction: _deleteTransaction,
