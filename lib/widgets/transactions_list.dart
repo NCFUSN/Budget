@@ -13,23 +13,25 @@ class TransactionsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: transactions.isEmpty
-          ? Column(
-              children: [
-                Text('No transactions found',
-                    // ignore: deprecated_member_use
-                    style: Theme.of(context).textTheme.title),
-                SizedBox(
-                  height: 10,
-                ), // <BR>
-                Container(
-                  height: 200,
-                  child: Image.asset(
-                    'assets/images/waiting.png',
-                    fit: BoxFit.cover,
-                  ),
-                )
-              ],
-            )
+          ? LayoutBuilder(builder: (context, constraints) {
+              return Column(
+                children: [
+                  Text('No transactions found',
+                      // ignore: deprecated_member_use
+                      style: Theme.of(context).textTheme.title),
+                  SizedBox(
+                    height: 10,
+                  ), // <BR>
+                  Container(
+                    height: constraints.maxHeight * 0.7,
+                    child: Image.asset(
+                      'assets/images/waiting.png',
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                ],
+              );
+            })
           : ListView.builder(
               itemBuilder: (ctx, index) {
                 return Card(

@@ -78,6 +78,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
     final appBar = AppBar(
       title:
           Text('Personal Expenses', style: TextStyle(fontFamily: 'Open Sans')),
@@ -87,6 +89,17 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: () => _presentAddTransactionModalList(context)),
       ],
     );
+    final transactionsList = Container(
+      height: (MediaQuery.of(context).size.height -
+              appBar.preferredSize.height -
+              MediaQuery.of(context).padding.top) *
+          0.7, // dedact navbar + status bar height
+      child: TransactionsList(
+        transactions: _transactions,
+        deleteTransaction: _deleteTransaction,
+      ),
+    );
+
     return Scaffold(
         appBar: appBar,
         body: SingleChildScrollView(
@@ -94,36 +107,38 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Show Chart'),
-                  Switch(
-                      value: _isShowChart,
-                      onChanged: (value) {
-                        setState(() {
-                          _isShowChart = value;
-                        });
-                      }),
-                ],
-              ),
-              _isShowChart
-                  ? Container(
-                      height: (MediaQuery.of(context).size.height -
-                              appBar.preferredSize.height -
-                              MediaQuery.of(context).padding.top) *
-                          0.3,
-                      child: Chart(_recentTransactions))
-                  : Container(
-                      height: (MediaQuery.of(context).size.height -
-                              appBar.preferredSize.height -
-                              MediaQuery.of(context).padding.top) *
-                          0.7, // dedact navbar + status bar height
-                      child: TransactionsList(
-                        transactions: _transactions,
-                        deleteTransaction: _deleteTransaction,
-                      ),
-                    )
+              if (isLandscape)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Show Chart'),
+                    Switch(
+                        value: _isShowChart,
+                        onChanged: (value) {
+                          setState(() {
+                            _isShowChart = value;
+                          });
+                        }),
+                  ],
+                ),
+              if (!isLandscape)
+                Container(
+                  height: (MediaQuery.of(context).size.height -
+                          appBar.preferredSize.height -
+                          MediaQuery.of(context).padding.top) *
+                      0.3,
+                  child: Chart(_recentTransactions),
+                ),
+              if (!isLandscape) transactionsList,
+              if (isLandscape)
+                _isShowChart
+                    ? Container(
+                        height: (MediaQuery.of(context).size.height -
+                                appBar.preferredSize.height -
+                                MediaQuery.of(context).padding.top) *
+                            0.7,
+                        child: Chart(_recentTransactions))
+                    : transactionsList
             ],
           ),
         ),
