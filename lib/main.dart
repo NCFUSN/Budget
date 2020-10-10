@@ -36,20 +36,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _transactions = [
-    /*Transaction(
-        amount: 12.54,
-        id: '4564433677',
-        title: 'Clothes',
-        time: DateTime.now(),
-        currency: '£'),
-    Transaction(
-        amount: 34.27,
-        id: '4564433678',
-        title: 'Fishing Kit',
-        time: DateTime.now(),
-        currency: '£')*/
-  ];
+  final List<Transaction> _transactions = [];
+  bool _isShowChart = false;
 
   List<Transaction> get _recentTransactions {
     return _transactions.where((transaction) {
@@ -106,22 +94,36 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                  height: (MediaQuery.of(context).size.height -
-                          appBar.preferredSize.height -
-                          MediaQuery.of(context).padding.top) *
-                      0.3,
-                  child: Chart(_recentTransactions)),
-              Container(
-                height: (MediaQuery.of(context).size.height -
-                        appBar.preferredSize.height -
-                        MediaQuery.of(context).padding.top) *
-                    0.7, // dedact navbar + status bar height
-                child: TransactionsList(
-                  transactions: _transactions,
-                  deleteTransaction: _deleteTransaction,
-                ),
-              )
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Show Chart'),
+                  Switch(
+                      value: _isShowChart,
+                      onChanged: (value) {
+                        setState(() {
+                          _isShowChart = value;
+                        });
+                      }),
+                ],
+              ),
+              _isShowChart
+                  ? Container(
+                      height: (MediaQuery.of(context).size.height -
+                              appBar.preferredSize.height -
+                              MediaQuery.of(context).padding.top) *
+                          0.3,
+                      child: Chart(_recentTransactions))
+                  : Container(
+                      height: (MediaQuery.of(context).size.height -
+                              appBar.preferredSize.height -
+                              MediaQuery.of(context).padding.top) *
+                          0.7, // dedact navbar + status bar height
+                      child: TransactionsList(
+                        transactions: _transactions,
+                        deleteTransaction: _deleteTransaction,
+                      ),
+                    )
             ],
           ),
         ),
