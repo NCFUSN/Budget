@@ -85,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     final PreferredSizeWidget appBar = Platform.isIOS
         ? CupertinoNavigationBar(
-            middle: Text('Personal Expenses'), // navbar title in iOS
+            middle: const Text('Personal Expenses'), // navbar title in iOS
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -98,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           )
         : AppBar(
-            title: Text('Personal Expenses',
+            title: const Text('Personal Expenses',
                 style: TextStyle(fontFamily: 'Open Sans')),
             actions: <Widget>[
               IconButton(

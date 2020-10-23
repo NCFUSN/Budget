@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
@@ -60,7 +59,7 @@ class _TransactionInputState extends State<TransactionInput> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               TextField(
-                  decoration: InputDecoration(labelText: 'Title'),
+                  decoration: const InputDecoration(labelText: 'Title'),
                   controller: _titleController,
                   onSubmitted: (_) => _submitData()),
               TextField(
@@ -87,7 +86,7 @@ class _TransactionInputState extends State<TransactionInput> {
                 onPressed: () {
                   _submitData();
                 },
-                child: Text('Add Transaction'),
+                child: const Text('Add Transaction'),
                 color: Theme.of(context).primaryColor,
                 textColor: Theme.of(context).textTheme.button.color,
               )
