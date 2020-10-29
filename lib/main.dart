@@ -78,34 +78,92 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
+  List<Widget> _buildContentInLandscapeMode(
+    MediaQueryData mediaQuery,
+    AppBar appBar,
+    Widget transactionsList,
+  ) {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Show Chart',
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          Switch.adaptive(
+              activeColor: Theme.of(context).accentColor,
+              value: _isShowChart,
+              onChanged: (value) {
+                setState(() {
+                  _isShowChart = value;
+                });
+              }),
+        ],
+      ),
+      _isShowChart
+          ? Container(
+              height: (mediaQuery.size.height -
+                      appBar.preferredSize.height -
+                      mediaQuery.padding.top) *
+                  0.7,
+              child: Chart(_recentTransactions))
+          : transactionsList
+    ];
+  }
+
+  List<Widget> _buildContentInPortrateMode(
+    MediaQueryData mediaQuery,
+    AppBar appBar,
+    Widget transactionsList,
+  ) {
+    return [
+      Container(
+        height: (mediaQuery.size.height -
+                appBar.preferredSize.height -
+                mediaQuery.padding.top) *
+            0.3,
+        child: Chart(_recentTransactions),
+      ),
+      transactionsList
+    ];
+  }
+
+  Widget _buildCupertinoNavigationBar() {
+    return CupertinoNavigationBar(
+      middle: const Text('Personal Expenses'), // navbar title in iOS
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          GestureDetector(
+            // use GestureDetector to build iOS buttons
+            child: Icon(CupertinoIcons.add),
+            onTap: () => _presentAddTransactionModalList(context),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAppBar() {
+    return AppBar(
+      title: const Text('Personal Expenses',
+          style: TextStyle(fontFamily: 'Open Sans')),
+      actions: <Widget>[
+        IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () => _presentAddTransactionModalList(context)),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final isLandscape = mediaQuery.orientation == Orientation.landscape;
 
-    final PreferredSizeWidget appBar = Platform.isIOS
-        ? CupertinoNavigationBar(
-            middle: const Text('Personal Expenses'), // navbar title in iOS
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                GestureDetector(
-                  // use GestureDetector to build iOS buttons
-                  child: Icon(CupertinoIcons.add),
-                  onTap: () => _presentAddTransactionModalList(context),
-                )
-              ],
-            ),
-          )
-        : AppBar(
-            title: const Text('Personal Expenses',
-                style: TextStyle(fontFamily: 'Open Sans')),
-            actions: <Widget>[
-              IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () => _presentAddTransactionModalList(context)),
-            ],
-          );
+    final PreferredSizeWidget appBar =
+        Platform.isIOS ? _buildCupertinoNavigationBar() : _buildAppBar();
     final transactionsList = Container(
       height: (mediaQuery.size.height -
               appBar.preferredSize.height -
@@ -122,43 +180,13 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
+        children: <Widget>[
           if (isLandscape)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Show Chart',
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-                Switch.adaptive(
-                    activeColor: Theme.of(context).accentColor,
-                    value: _isShowChart,
-                    onChanged: (value) {
-                      setState(() {
-                        _isShowChart = value;
-                      });
-                    }),
-              ],
-            ),
+            ..._buildContentInLandscapeMode(
+                mediaQuery, appBar, transactionsList),
           if (!isLandscape)
-            Container(
-              height: (mediaQuery.size.height -
-                      appBar.preferredSize.height -
-                      mediaQuery.padding.top) *
-                  0.3,
-              child: Chart(_recentTransactions),
-            ),
-          if (!isLandscape) transactionsList,
-          if (isLandscape)
-            _isShowChart
-                ? Container(
-                    height: (mediaQuery.size.height -
-                            appBar.preferredSize.height -
-                            mediaQuery.padding.top) *
-                        0.7,
-                    child: Chart(_recentTransactions))
-                : transactionsList
+            ..._buildContentInPortrateMode(
+                mediaQuery, appBar, transactionsList),
         ],
       ),
     ));
